@@ -8,7 +8,7 @@ import numpy as np
 import time
 from ..utils import alloc_logger
 from .bp_neural_network import BpNNClassifier
-from ..config.DefaultConfig import DefaultConfig as config
+from ..config import config
 import os
 
 
@@ -189,7 +189,7 @@ if __name__ == "__main__":
         tol=1e-3, 
         scaler=None)
 
-    total_range = 1
+    total_range = 4
     trainer.logger.log_message("TOTAL_RANGE=", total_range, head=signature)
 
     total_count = 0
@@ -200,11 +200,11 @@ if __name__ == "__main__":
 
         count, error_rate, time_cost = trainer.train_and_test(0.2)
 
-        file_dir = os.path.join(config.PATHS.CKPT, "debug")
+        file_dir = os.path.join(config.PATH.CKPOINT, "debug")
         file_dir = os.path.join(file_dir, trainer.network.logger.get_fs_legal_time_stampe())
         
         trainer.network.save_to_file(file_dir)
-        image_file_name = os.path.join(config.PATHS.IMAGE, "debug")
+        image_file_name = os.path.join(config.PATH.IMAGE, "debug")
         image_file_name = os.path.join(image_file_name, trainer.network.logger.get_fs_legal_time_stampe() + ".png")
         trainer.network.save_graph_to_file(image_file_name)
 

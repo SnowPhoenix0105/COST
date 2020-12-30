@@ -30,21 +30,22 @@ class Logger:
             default_head: str or "__name__", 
             default_mid: str, 
             console_output: bool):
-        
+
         # 引用全局日志文件
         global total_file_reference
         global total_file
         total_file_reference += 1
         if total_file is None or total_file.closed:
-            total_file = open(os.path.join(config.PATHS.LOG, "total.log"), 'a', encoding='utf8')
+            total_file = open(os.path.join(config.PATH.LOG, "total.log"), 'a', encoding='utf8')
 
         global file_pool
         if log_file_name in file_pool.keys():
             self._log_file = file_pool[log_file_name][0]
             file_pool[log_file_name][1] += 1
         else:
-            self._log_file = open(os.path.join(config.PATHS.LOG, log_file_name), 'a', encoding='utf8')
+            self._log_file = open(os.path.join(config.PATH.LOG, log_file_name), 'a', encoding='utf8')
             file_pool[log_file_name] = [self._log_file, 1]
+            self._log_file.write('\n\n\n')
         
         self._log_file_name = log_file_name
         self.console_output = console_output
@@ -54,10 +55,13 @@ class Logger:
     def __del__(self):
         global file_pool
         file_pool[self._log_file_name][1] -= 1
-        if file_pool[self._log_file_name][1] == 0:
-            self._log_file.write("\n\n\n")
-            self._log_file.close()
-            del file_pool[self._log_file_name]
+        try:
+            if file_pool[self._log_file_name][1] == 0:
+                print("closing", self._log_file_name)
+                self._log_file.close()
+                del file_pool[self._log_file_name]
+        except Exception as e:
+            print("fail to close\t", self._log_file_name)
 
         # 解除全局日志文件的引用
         global total_file_reference
@@ -199,7 +203,7 @@ def console_message(*msg:"can to str", head:str or "__name__"=None, mid:str=None
 
 
 if __name__ == "__main__":
-    print(config.PATHS.LOG)
+    print(config.PATH.LOG)
     log_message("test", "default", "log_message", mid=' ')
     log_message(1, 2, 3, 4, (1,2), mid='\t')
     logger1 = alloc_logger()

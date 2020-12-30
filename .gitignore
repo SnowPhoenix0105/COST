@@ -1,2 +1,6 @@
 .vscode/
 *.zip
+ckpoint/
+images/
+log/
+__pycache__/

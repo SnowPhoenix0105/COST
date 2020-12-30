@@ -1,3 +1,8 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+# @author: SnowPhoenix
+
+
 import os
 import logging
 
@@ -9,12 +14,32 @@ class DefaultConfig:
         DATA_TRAIN_CSV = os.path.join(DATA_PUBLIC, "train.csv")
         DATA_TEST_CSV = os.path.join(DATA_PUBLIC, "test_sample.csv")
 
+        CKPOINT = os.path.join(TOP, "ckpoint")
+        IMAGE = os.path.join(TOP, "images")
+        LOG = os.path.join(TOP, "log")
+
     class TRAIN:
         BATCH_SIZE = 128
 
     class LOG:
-        FILE_PATH = os.path.join(DefaultConfig.PATH.TOP, "log")
+        DEFAULT_LOG_DIR = "default.log"
+        DEFAULT_HEAD = ''
+        DEFAULT_MID = ''
+        DEFAULT_NEED_CONSOLE = True
 
 def auto_init():
-    # TODO
+    dir_to_ensure_exist = [
+            DefaultConfig.PATH.CKPOINT, 
+            DefaultConfig.PATH.IMAGE,
+            DefaultConfig.PATH.LOG
+        ]
+    for d in dir_to_ensure_exist:
+        if not os.path.exists(d):
+            print("making dir:\t", d)
+            os.makedirs(d)
+
+
+auto_init()
+
+if __name__ == "__main__":
     pass

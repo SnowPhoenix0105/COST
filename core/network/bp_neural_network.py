@@ -235,7 +235,7 @@ class BpNNClassifier:
         """
         signature = "save_to_file():\t"
         if file_dir is None:
-            file_dir = os.path.join(config.PATHS.CKPT, self.logger.get_fs_legal_time_stampe())
+            file_dir = os.path.join(config.PATH.CKPT, self.logger.get_fs_legal_time_stampe())
 
         try:
             shutil.rmtree(file_dir)
@@ -276,7 +276,7 @@ class BpNNClassifier:
         @param file_dir: 保存图片的文件名
         """
         if file_name is None:
-            file_name = os.path.join(config.PATHS.IMAGE, self.logger.get_fs_legal_time_stampe() + ".png")
+            file_name = os.path.join(config.PATH.IMAGE, self.logger.get_fs_legal_time_stampe() + ".png")
         try:
             dir_name = os.path.dirname(file_name)
             os.makedirs(dir_name)
@@ -320,7 +320,7 @@ if __name__ == "__main__":
     signature = "__main__"
     network.logger.log_message("------------- START SIMPLE TEST -------------", head=signature)
 
-    range_num = 5
+    range_num = 4
     error_rate_sum = 0
     network.logger.log_message("TOTAL RANGE:\t", range_num, head=signature)
     for i in range(range_num):
@@ -358,19 +358,20 @@ if __name__ == "__main__":
         network.logger.log_message("error rate:\t{:.2f}%".format(error_rate * 100), head=signature)
 
         # 保存ckpoint
-        file_dir = os.path.join(config.PATHS.CKPT, "debug")
+        file_dir = os.path.join(config.PATH.CKPOINT, "debug")
         file_dir = os.path.join(file_dir, network.logger.get_fs_legal_time_stampe())
         network.save_to_file(file_dir)
         # 绘制 loss 下降曲线
         network.draw_graph()
 
         load_net_work = BpNNClassifier.load_from_file(file_dir)
-        load_test_answer = network.predict(test_samples)
+        load_test_answer = load_net_work.predict(test_samples)
         is_same = (load_test_answer == test_answer).all()
+        assert is_same
         network.logger.log_message("reload is same=", is_same, head=signature)
 
     # 保存 loss 下降曲线
-    image_file_name = os.path.join(config.PATHS.IMAGE, "debug")
+    image_file_name = os.path.join(config.PATH.IMAGE, "debug")
     image_file_name = os.path.join(image_file_name, network.logger.get_fs_legal_time_stampe() + ".png")
     network.save_graph_to_file(image_file_name)
 
