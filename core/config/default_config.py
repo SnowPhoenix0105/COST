@@ -30,7 +30,7 @@ class DefaultConfig:
 
 def auto_init():
     dir_to_ensure_exist = [
-            DefaultConfig.PATH.CKPOINT, 
+            # DefaultConfig.PATH.CKPOINT, 
             DefaultConfig.PATH.IMAGE,
             DefaultConfig.PATH.LOG
         ]

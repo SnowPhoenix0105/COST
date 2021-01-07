@@ -69,7 +69,7 @@ class Trainer:
             if t % self.log_interval == self.log_interval - 1:
                 self.logger.log_message("[{:d}]loss=".format(t), float(loss))
 
-            if loss < 5e-3:
+            if loss < target_loss:
                 break
 
         img_file_name = os.path.join(config.PATH.IMAGE, self.logger.get_fs_legal_time_stampe() + ".png")
