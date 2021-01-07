@@ -13,6 +13,7 @@ class DefaultConfig:
         DATA_PUBLIC = os.path.join(DATA, "public_dataset")
         DATA_TRAIN_CSV = os.path.join(DATA_PUBLIC, "train.csv")
         DATA_TEST_CSV = os.path.join(DATA_PUBLIC, "test_sample.csv")
+        DATA_RESULT_CSV = os.path.join(DATA, "submission.csv")
 
         CKPOINT = os.path.join(TOP, "ckpoint")
         IMAGE = os.path.join(TOP, "images")

@@ -122,8 +122,8 @@ def vector_list_csv(csv_file_name) -> list:
 
 def load_all_csv_as_ndarray(csv_file_name) -> (np.ndarray, np.ndarray):
     sample_count = sum(1 for _ in origin_walk_csv(csv_file_name))
-    samples = np.empty((sample_count, 9))
-    labels = np.empty((sample_count, 1))
+    samples = np.empty((sample_count, 9), dtype=np.float)
+    labels = np.empty((sample_count, 1), dtype=np.float)
     for row, (sample, label) in enumerate(vector_walk_csv(csv_file_name)):
         samples[row] = sample
         labels[row][0] = label

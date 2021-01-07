@@ -1,6 +1,7 @@
 .vscode/
 *.zip
-ckpoint/
 images/
 log/
 __pycache__/
+/ckpoint/*
+!/ckpoint/pretrained

@@ -32,11 +32,23 @@ class Model:
     def __str__(self):
         return "Model[\nin_scaler={:},\nout_scaler={:},\nnetwork={}]".format(self.in_scaler, self.out_scaler, self.network)
 
+
+    def __call__(self, X):
+        return self.predict(X)
+
+    def predict(self, X):
+        X = self.in_scaler.transform(X)
+        X = torch.from_numpy(X).float()
+
+        Y = self.network(X)
+        Y = Y.detach().numpy()
+        return self.out_scaler.inverse_transform(Y)
+
     def save(self, file_dir=None):
         """
         @param file_dir: 将向该目录下写入保存文件, 会先清空该目录下所有文件和子目录
         """
-        signature = "save_to_file():\t"
+        signature = "save():\t"
         if file_dir is None:
             file_dir = os.path.join(config.PATH.CKPOINT, self.logger.get_fs_legal_time_stampe())
         try:
@@ -49,9 +61,14 @@ class Model:
         joblib.dump(self.in_scaler, os.path.join(file_dir, "in_scaler"))
         joblib.dump(self.out_scaler, os.path.join(file_dir, "out_scaler"))
         torch.save(self.network.state_dict(), os.path.join(file_dir, "network"))
+
+        self.logger.log_message("save in [", file_dir, ']')
+
+        return file_dir
     
     def load(self, file_dir):
         self.in_scaler = joblib.load(os.path.join(file_dir, "in_scaler"))
         self.out_scaler = joblib.load(os.path.join(file_dir, "out_scaler"))
         self.network.load_state_dict(torch.load(os.path.join(file_dir, "network")))
+        self.logger.log_message("load from [", file_dir, ']')
         return self
